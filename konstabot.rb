@@ -43,14 +43,22 @@ consumer = OAuth::Consumer.new(
 
 access_token = OAuth::AccessToken.new(consumer, config['token'], config['secret'])
 
-response=access_token.get(
-		"/#{api_version}/lists/statuses.json?owner_screen_name=k_tcher&slug=android&include_rts=0&count=100&include_entities=false")
+begin
+	history=YAML.load_file('history.yml')
+rescue
+# ignored
+end
+
+path_to_query="/#{api_version}/lists/statuses.json?owner_screen_name=#{config['twitter_user']}&slug=#{config['twitter_list']}"
+path_to_query+="&since_id=#{history[:latest_emitted_id]}" unless history.nil?
+path_to_query+='&include_rts=0&count=100&include_entities=false'
+response=access_token.get(path_to_query)
 
 exit 1 unless response.class == Net::HTTPOK
 
 tweets=JSON.parse(response.body)
 
-tweets.select! { |tweet| tweet['retweet_count'] >= 4 || tweet['favorite_count'] >= 4 }
+tweets.select! { |tweet| tweet['retweet_count'] >= 2 || tweet['favorite_count'] >= 2 }
 
 tweets.sort! { |b, a| a['retweet_count'] + a['favorite_count'] <=> b['retweet_count'] + b['favorite_count'] }
 
@@ -70,13 +78,16 @@ tweets.each { |tweet|
 	break if tweets_to_emit.length == options[:number_of_tweets]
 }
 
+latest_emitted_id=0
+
 for item in tweets_to_emit
 	msg_text = item['text']
 	user_name = item['user']['screen_name']
+	id=item['id']
 	id_str = item['id_str']
 	icon_url = item['user']['profile_image_url_https']
 
-	puts "#{user_name}: #{msg_text}"
+	latest_emitted_id=id if id > latest_emitted_id
 
 	unless options[:dry_run]
 		HTTParty.post config['slack_webhooks_uri'], {
@@ -87,5 +98,13 @@ for item in tweets_to_emit
 				}.to_json,
 				:headers => {'Content-Type' => 'application/json'}
 		}
+	else
+		puts "#{user_name}: #{msg_text}"
 	end
+end
+
+unless latest_emitted_id==0
+	history={:latest_emitted_id => latest_emitted_id}
+
+	File.open('history.yml', 'w') { |f| f.write history.to_yaml }
 end
