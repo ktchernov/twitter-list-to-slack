@@ -1,0 +1,26 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
+    json (2.0.2)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
+    multi_xml (0.5.5)
+    oauth (0.5.1)
+    twitter_oauth (0.4.94)
+      json (>= 1.8.0)
+      mime-types (>= 1.16)
+      oauth (>= 0.4.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  httparty
+  json
+  twitter_oauth
+
+BUNDLED WITH
+   1.12.5
