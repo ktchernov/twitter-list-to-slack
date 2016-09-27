@@ -35,18 +35,25 @@ rescue OptionParser::ParseError
 	exit 1
 end
 
+credentials=nil
+begin
+	credentials=YAML.load_file('credentials.yml')
+rescue
+	exit 1
+end
+
 api_version = '1.1'
 api_host = 'api.twitter.com'
 
 config=YAML.load_file('config.yml')
 
 consumer = OAuth::Consumer.new(
-		config['consumer_key'],
-		config['consumer_secret'],
+		credentials['consumer_key'],
+		credentials['consumer_secret'],
 		{:site => "https://#{api_host}"}
 )
 
-access_token = OAuth::AccessToken.new(consumer, config['token'], config['secret'])
+access_token = OAuth::AccessToken.new(consumer, credentials['token'], credentials['secret'])
 
 history=nil
 begin
@@ -111,7 +118,7 @@ tweets_to_emit.each { |tweet|
 	if options[:dry_run]
 		puts "[#{twitter_status_uri}] #{user_name}: #{msg_text}"
 	else
-		HTTParty.post config['slack_webhooks_uri'], {
+		HTTParty.post credentials['slack_webhooks_uri'], {
 				:body => {
 						:text => twitter_status_uri,
 						:username => "#{user_name} (#{config['bot_name']})",

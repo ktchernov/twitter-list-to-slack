@@ -1,0 +1,8 @@
+twitter_user: 'k_tcher'
+twitter_list: 'Android'
+blacklisted_words: ['Trump', 'Hillary', 'debatenight', 'racist', 'ISIS', 'Donald', 'Clinton', 'election']
+bot_name: 'Konstabot'
+retweet_min_count: 2
+likes_min_count: 3
+emit_max_tweets_per_user: 1 # maximum number of tweets to emit for each twitter account
+num_tweets_to_fetch: 100 # maximum number of tweets that will be downloaded from Twitter
