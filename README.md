@@ -6,6 +6,12 @@ Script usage (will run the script once):
 
     bundle install # first-time setup
     ruby konstabot.rb # will print out instructions
+    
+## Example
+
+Example `config.xml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
+
+<img src="Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
 
 ## 1. Configure Twitter API integration
 
@@ -64,3 +70,7 @@ For example on Mac OS X, you can set a cron job using `crontab -e`:
     */60 9-17 * * 1-5 cd <your checkout directory> && <path to ruby>/ruby konstabot.rb -n 10
    
 [See Apple's Documentation](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) for more details on this example.
+
+# LICENSE
+
+Apache 2.0, see [LICENSE.md](LICENSE.md) for full details.
