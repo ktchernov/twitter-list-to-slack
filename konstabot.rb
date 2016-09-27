@@ -58,7 +58,7 @@ exit 1 unless response.class == Net::HTTPOK
 
 tweets=JSON.parse(response.body)
 
-tweets.select! { |tweet| tweet['retweet_count'] >= 2 || tweet['favorite_count'] >= 2 }
+tweets.select! { |tweet| tweet['retweet_count'] >= 2 || tweet['favorite_count'] >= 3 }
 
 tweets.sort! { |b, a| a['retweet_count'] + a['favorite_count'] <=> b['retweet_count'] + b['favorite_count'] }
 
@@ -69,7 +69,7 @@ tweets.each { |tweet|
 	screen_name = tweet['user']['screen_name']
 
 	seen_users[screen_name] = 0 unless seen_users.key? screen_name
-	next if seen_users[screen_name] > 1
+	next if seen_users[screen_name] >= 1
 
 	seen_users[screen_name]=seen_users[screen_name]+1
 
