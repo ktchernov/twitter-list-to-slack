@@ -3,17 +3,19 @@
 Konstabot is a tool that will extract the most popular posts from a Twitter List and post them to a Slack channel.
 
 This can be a more useful Slack integration than something that pulls out every tweet for every user you specify. Konstabot can optionally apply a blacklist of keywords to ignore, filter out retweets, and specify a minimum number of likes or retweets.
-
-Script usage (will run the script once):
-
-    bundle install # first-time setup
-    ruby konstabot.rb # will print out instructions
     
-## Example
+### Example
 
 Example `config.xml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
 
 <img src="Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
+
+### Script Usage
+
+Will run the script once, see setup steps below for more details.
+
+    bundle install # first-time setup
+    ruby konstabot.rb # will print out instructions
 
 ## 1. Configure Twitter API integration
 
