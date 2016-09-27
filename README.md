@@ -73,4 +73,4 @@ For example on Mac OS X, you can set a cron job using `crontab -e`:
 
 # LICENSE
 
-Apache 2.0, see [LICENSE.md](LICENSE.md) for full details.
+Apache 2.0, see [LICENSE](LICENSE) for full details.
