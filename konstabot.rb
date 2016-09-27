@@ -3,6 +3,7 @@ require 'json'
 require 'httparty'
 require 'optparse'
 require 'yaml'
+require 'set'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -49,6 +50,8 @@ rescue
 # ignored
 end
 
+blacklist_set = config['blacklisted_words'].map { |word| word.downcase }
+
 path_to_query="/#{api_version}/lists/statuses.json?owner_screen_name=#{config['twitter_user']}&slug=#{config['twitter_list']}"
 path_to_query+="&since_id=#{history[:latest_emitted_id]}" unless history.nil?
 path_to_query+='&include_rts=0&count=100&include_entities=false'
@@ -59,6 +62,8 @@ exit 1 unless response.class == Net::HTTPOK
 tweets=JSON.parse(response.body)
 
 tweets.select! { |tweet| tweet['retweet_count'] >= 2 || tweet['favorite_count'] >= 3 }
+
+tweets.reject! { |tweet| tweet['text'].split(/[^\w]+/).any? { |k| blacklist_set.member?(k.downcase) } }
 
 tweets.sort! { |b, a| a['retweet_count'] + a['favorite_count'] <=> b['retweet_count'] + b['favorite_count'] }
 
