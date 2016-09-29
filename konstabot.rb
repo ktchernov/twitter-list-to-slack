@@ -131,7 +131,7 @@ tweets_to_emit.each { |tweet|
 	end
 }
 
-unless options[:dry_run] || options[:no_history] || latest_emitted_id == nil
+unless options[:dry_run] || options[:no_history] || latest_emitted_id != 0
 	updated_history={:latest_emitted_id => latest_emitted_id}
 
 	File.open('history.yml', 'w') { |f| f.write updated_history.to_yaml }
