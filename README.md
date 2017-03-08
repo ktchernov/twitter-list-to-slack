@@ -28,9 +28,9 @@ You need some Twitter OAuth tokens to be able to use the Twitter API to read fro
 * Under the "Your Access Token" section, create an access token and grant access
 * Make sure you set the "Access Level" to "Read Only" for this application
 
-### 1.2 Create a configurations.yml
+### 1.2 Create a credentials.yml
 
-Create a `configurations.yml` at the root of the project, at the same level as the `konstabot.rb` file:
+Create a `credentials.yml` at the root of the project, at the same level as the `konstabot.rb` file:
 
     consumer_key: # Copy your Twitter Consumer Key from the steps above into here
     consumer_secret: # Copy your Twitter Secret from the steps above into here
