@@ -1,6 +1,6 @@
 twitter_user: 'k_tcher'
 twitter_list: 'android'
-blacklisted_words: ['Trump', 'Hillary', 'debatenight', 'racist', 'ISIS', 'Donald', 'Clinton', 'election']
+blacklisted_words: ['Trump', 'Hillary', 'debatenight', 'racist', 'ISIS', 'Donald', 'Clinton', 'election', 'debate', 'Pence', 'immigration', 'Subcommittee' ]
 bot_name: 'Konstabot'
 retweet_min_count: 2
 likes_min_count: 3
