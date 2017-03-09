@@ -80,7 +80,7 @@ blacklist_set = config['blacklisted_words'].map { |word| word.downcase }
 tweets.reject! { |tweet| tweet['text'].split(/[^\w]+/).any? { |word| blacklist_set.member?(word.downcase) } }
 
 tweets.sort! { |tweetA, tweetB|
-	tweetB['retweet_count'] + tweetB['favorite_count'] <=> tweetA['retweet_count'] + tweetB['favorite_count']
+	tweetB['retweet_count'] + tweetB['favorite_count'] <=> tweetA['retweet_count'] + tweetA['favorite_count']
 }
 
 # Same account can only be emitted emit_max_tweets_per_user times per session
