@@ -52,7 +52,7 @@ consumer = OAuth::Consumer.new(
 
 access_token = OAuth::AccessToken.new(consumer, credentials['token'], credentials['secret'])
 
-history = History.new(redis_url: ENV['KB_REDIS_URL'])
+history = History.new(url: ENV['KB_REDIS_URL'])
 latest_emitted_id = history.load_latest_emitted_id unless options[:no_history]
 
 path_to_query="/#{api_version}/lists/statuses.json?owner_screen_name=#{config['twitter_user']}&slug=#{config['twitter_list']}"

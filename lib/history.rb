@@ -5,8 +5,10 @@ class History
   KEY_LATEST_EMITTED_ID = 'latest_emitted_id'
   HISTORY_FILE = 'history.yml'
 
-  def initialize(redis_url: redis_url)
-    @redis = Redis.new(:url => redis_url) unless redis_url.nil?
+  def initialize(url:)
+    unless url.nil?
+      @redis = Redis.new(:url => url)
+    end
   end
 
   def load_latest_emitted_id
