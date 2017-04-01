@@ -58,13 +58,11 @@ rescue
 	credentials = credentials_from_env
 
 	if credentials == nil
-		print 'Please create a credentials.yml or define environment variables '
-		  + 'following the examples in README.md'
+		puts "Please create a credentials.yml or define environment variables " +
+			" following the examples in README.md"
 		exit 1
 	end
 end
-
-puts credentials
 
 api_version = '1.1'
 api_host = 'api.twitter.com'
