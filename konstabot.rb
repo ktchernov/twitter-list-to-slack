@@ -43,11 +43,11 @@ def credentials_from_env
 	end
 
 	credentials = {
-		consumer_key: ENV['KB_CONSUMER_KEY'],
-		consumer_secret: ENV['KB_CONSUMER_SECRET'],
-		token: ENV['KB_TOKEN'],
-		secret: ENV['KB_SECRET'],
-		slack_webhooks_uri: ENV['KB_SLACK_WEBHOOKS_URI']
+		'consumer_key': ENV['KB_CONSUMER_KEY'],
+		'consumer_secret': ENV['KB_CONSUMER_SECRET'],
+		'token': ENV['KB_TOKEN'],
+		'secret': ENV['KB_SECRET'],
+		'slack_webhooks_uri': ENV['KB_SLACK_WEBHOOKS_URI']
 	}
 	return credentials
 end
@@ -63,6 +63,8 @@ rescue
 		exit 1
 	end
 end
+
+puts credentials
 
 api_version = '1.1'
 api_host = 'api.twitter.com'

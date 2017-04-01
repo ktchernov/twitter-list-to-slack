@@ -10,7 +10,7 @@ puts time
 
 if time.wday.between?(1,6) && time.hour.between?(8,17)
     puts "Running Konstabot"
-    `ruby konstabot.rb -n 10 -H`
+    system "ruby konstabot.rb -n 10 -H"
 else
    puts "Skipped"
 end
