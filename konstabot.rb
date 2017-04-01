@@ -4,6 +4,7 @@ require 'httparty'
 require 'optparse'
 require 'yaml'
 require 'set'
+require_relative 'lib/credentials'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -35,34 +36,7 @@ rescue OptionParser::ParseError
 	exit 1
 end
 
-credentials=nil
-
-def credentials_from_env
-	if ENV['KB_CONSUMER_KEY'] == nil
-		return nil
-	end
-
-	credentials = {
-		'consumer_key' => ENV['KB_CONSUMER_KEY'],
-		'consumer_secret' => ENV['KB_CONSUMER_SECRET'],
-		'token' => ENV['KB_TOKEN'],
-		'secret' => ENV['KB_SECRET'],
-		'slack_webhooks_uri' => ENV['KB_SLACK_WEBHOOKS_URI']
-	}
-	return credentials
-end
-
-begin
-	credentials=YAML.load_file('credentials.yml')
-rescue
-	credentials = credentials_from_env
-
-	if credentials == nil
-		puts "Please create a credentials.yml or define environment variables " +
-			" following the examples in README.md"
-		exit 1
-	end
-end
+credentials = load_credentials
 
 api_version = '1.1'
 api_host = 'api.twitter.com'
