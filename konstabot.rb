@@ -5,6 +5,7 @@ require 'optparse'
 require 'yaml'
 require 'set'
 require_relative 'lib/credentials'
+require_relative 'lib/history'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -51,15 +52,11 @@ consumer = OAuth::Consumer.new(
 
 access_token = OAuth::AccessToken.new(consumer, credentials['token'], credentials['secret'])
 
-history=nil
-begin
-	history=YAML.load_file('history.yml') unless options[:no_history]
-rescue
-# ignored
-end
+history = History.new(redis_url: ENV['KB_REDIS_URL'])
+latest_emitted_id = history.load_latest_emitted_id unless options[:no_history]
 
 path_to_query="/#{api_version}/lists/statuses.json?owner_screen_name=#{config['twitter_user']}&slug=#{config['twitter_list']}"
-path_to_query+="&since_id=#{history[:latest_emitted_id]}" unless history.nil?
+path_to_query+="&since_id=#{latest_emitted_id}" unless latest_emitted_id.nil?
 path_to_query+="&include_rts=0&count=#{config['num_tweets_to_fetch']}&include_entities=false"
 response=access_token.get(path_to_query)
 
@@ -125,8 +122,8 @@ tweets_to_emit.each { |tweet|
 	end
 }
 
-unless options[:dry_run] || options[:no_history] || latest_emitted_id == 0
-	updated_history={:latest_emitted_id => latest_emitted_id}
+puts "Printed #{tweets_to_emit.length} tweets"
 
-	File.open('history.yml', 'w') { |f| f.write updated_history.to_yaml }
+unless options[:dry_run] || options[:no_history] || latest_emitted_id == 0
+	history.save_latest_emitted_id latest_emitted_id
 end

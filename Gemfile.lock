@@ -9,6 +9,7 @@ GEM
     mime-types-data (3.2016.0521)
     multi_xml (0.5.5)
     oauth (0.5.1)
+    redis (3.3.3)
     twitter_oauth (0.4.94)
       json (>= 1.8.0)
       mime-types (>= 1.16)
@@ -20,7 +21,8 @@ PLATFORMS
 DEPENDENCIES
   httparty
   json (= 1.8.3)
+  redis (~> 3.2)
   twitter_oauth
 
 BUNDLED WITH
-   1.12.5
+   1.14.6

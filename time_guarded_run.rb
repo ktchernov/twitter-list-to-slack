@@ -11,7 +11,8 @@ puts "time_guarded_run called at #{time}"
 weekday_only = (ENV['KB_WEEKDAY_ONLY'] || 'true') == 'true'
 start_hour = (ENV['KB_START_HOUR'] || 8).to_i
 end_hour = (ENV['KB_END_HOUR'] || 17).to_i
-max_tweets = (ENV['KB_MAX_TWEETS'] || 10).to_i
+max_tweets = (ENV['KB_MAX_TWEETS'] || 3).to_i
+max_tweets_first_hour = (ENV['KB_MAX_TWEETS_FIRST_HOUR'] || 8).to_i
 
 if weekday_only && (time.saturday? || time.sunday?)
   exit
