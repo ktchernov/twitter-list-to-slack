@@ -3,19 +3,22 @@
 Konstabot is a tool that will extract the most popular posts from a Twitter List and post them to a Slack channel.
 
 This can be a more useful Slack integration than something that pulls out every tweet for every user you specify. Konstabot can optionally apply a blacklist of keywords to ignore, filter out retweets, and specify a minimum number of likes or retweets.
-    
+
+The script can be configured to run as a timed job either on a local machine or on a
+remote service (such as Heroku).
+
 ### Example
 
 Example `config.xml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
 
 <img src="Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
 
-### Script Usage
+### Basic Script Usage
 
 Will run the script once, see setup steps below for more details.
 
     bundle install # first-time setup
-    ruby konstabot.rb # will print out instructions
+    ruby konstabot.rb # will print out instructions but needs credentials (below)
 
 ## 1. Configure Twitter API integration
 
@@ -37,7 +40,7 @@ Create a `credentials.yml` at the root of the project, at the same level as the 
     token: # Copy your Twitter Access Token from the steps above into here
     secret: # Copy your Twitter Access Token Secret from the steps above into here
     slack_webhooks_uri: # This can be added later
-    
+
 This file is not part of the git repository and should not be shared.
 
 ## 2. Configure Twitter List
@@ -54,7 +57,7 @@ e.g. For https://twitter.com/k_tcher/lists/android:
 Try out your set up with a dry run:
 
     ruby konstabot.rb -n 10 -d
-    
+
 A dry run will not send anything to Slack yet. You can tune the other settings in `config.yml` before you start posting to Slack.
 
 ## 4. Set up Slack integration
@@ -72,7 +75,7 @@ You can setup the script to be run periodically - such as every hour Monday-Frid
 For example on Mac OS X, you can set a cron job using `crontab -e`:
 
     */60 9-17 * * 1-5 cd <your checkout directory> && <path to ruby>/ruby konstabot.rb -n 10
-   
+
 [See Apple's Documentation](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) for more details on this example.
 
 # LICENSE
