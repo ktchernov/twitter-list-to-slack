@@ -31,7 +31,7 @@ You need some Twitter OAuth tokens to be able to use the Twitter API to read fro
 * Under the "Your Access Token" section, create an access token and grant access
 * Make sure you set the "Access Level" to "Read Only" for this application
 
-### 1.2 Create a credentials.yml
+### 1.2a Create a credentials.yml (when running locally)
 
 Create a `credentials.yml` at the root of the project, at the same level as the `konstabot.rb` file:
 
@@ -42,6 +42,9 @@ Create a `credentials.yml` at the root of the project, at the same level as the 
     slack_webhooks_uri: # This can be added later
 
 This file is not part of the git repository and should not be shared.
+
+### 1.2b Environment variables (for a cloud setup)
+See [Cloud Setup instructions](CloudSetup.md)
 
 ## 2. Configure Twitter List
 Pick the list that you want to follow. If the list is private, then the setup steps for Twitter API above need to link to the same account to which the private list belongs to. While public lists can be read from any Twitter account.
@@ -70,6 +73,10 @@ The script will now post to the specified Slack channel whenever you run it, unl
 
 ## 5. Timed job
 
+Many ways to do this. I've used these two:
+
+### 5a Cron job
+
 You can setup the script to be run periodically - such as every hour Monday-Friday 9-5pm. This is to be done outside of the script using a different script or your OS settings.
 
 For example on Mac OS X, you can set a cron job using `crontab -e`:
@@ -77,6 +84,9 @@ For example on Mac OS X, you can set a cron job using `crontab -e`:
     */60 9-17 * * 1-5 cd <your checkout directory> && <path to ruby>/ruby konstabot.rb -n 10
 
 [See Apple's Documentation](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) for more details on this example.
+
+### 5b Heroku timed job
+See [Cloud Setup instructions](CloudSetup.md) for more info.
 
 # LICENSE
 
