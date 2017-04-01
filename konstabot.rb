@@ -89,7 +89,7 @@ path_to_query+="&since_id=#{history[:latest_emitted_id]}" unless history.nil?
 path_to_query+="&include_rts=0&count=#{config['num_tweets_to_fetch']}&include_entities=false"
 response=access_token.get(path_to_query)
 
-raise "Failed to get twitter feed: #{resonse.to_s}" unless response.class == Net::HTTPOK
+raise "Failed to get twitter feed: #{response.to_s}" unless response.class == Net::HTTPOK
 
 tweets=JSON.parse(response.body)
 
