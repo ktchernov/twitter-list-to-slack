@@ -22,5 +22,9 @@ unless time.hour.between? start_hour, end_hour
   exit
 end
 
+if time.hour == start_hour
+  max_tweets = max_tweets_first_hour
+end
+
 puts "Running Konstabot with #{max_tweets} max tweets"
 system "ruby konstabot.rb -n #{max_tweets}"
