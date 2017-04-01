@@ -6,12 +6,21 @@
 # run and then calls the main Konstabot script.
 
 time = Time.new
-puts time
+puts "time_guarded_run called at #{time}"
 
-if time.wday.between?(1,6) && time.hour.between?(8,17)
-    puts "Running Konstabot"
-    system "ruby konstabot.rb -n 10 -H"
-else
-   puts "Skipped"
+weekday_only = (ENV['KB_WEEKDAY_ONLY'] || 'true') == 'true'
+start_hour = ENV['KB_START_HOUR'] || 8
+end_hour = ENV['KB_END_HOUR'].to_i || 17
+max_tweets = ENV['KB_MAX_TWEETS'].to_i || 10
+
+if weekday_only && (time.saturday? || time.sunday?)
+  puts "Not a weekday"
+  exit
 end
 
+unless time.hour.between? start_hour, end_hour
+  exit
+end
+
+puts "Running Konstabot with #{max_tweets} max tweets"
+system "ruby konstabot.rb -n 10 -H"
