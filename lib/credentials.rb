@@ -1,7 +1,5 @@
 require 'yaml'
 
-credentials=nil
-
 def credentials_from_env
 	if ENV['KB_CONSUMER_KEY'] == nil
 		return nil
@@ -14,12 +12,12 @@ def credentials_from_env
 		'secret' => ENV['KB_SECRET'],
 		'slack_webhooks_uri' => ENV['KB_SLACK_WEBHOOKS_URI']
 	}
-	return credentials
 end
 
 def load_credentials
+  credentials=nil
   begin
-  	credentials=YAML.load_file('credentials.yml')
+  	credentials = YAML.load_file('credentials.yml')
   rescue
   	credentials = credentials_from_env
 
@@ -29,4 +27,6 @@ def load_credentials
   		exit 1
   	end
   end
+
+  credentials
 end

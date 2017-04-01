@@ -42,7 +42,7 @@ credentials = load_credentials
 api_version = '1.1'
 api_host = 'api.twitter.com'
 
-config=YAML.load_file('config.yml')
+config = YAML.load_file('config.yml')
 
 consumer = OAuth::Consumer.new(
 		credentials['consumer_key'],
