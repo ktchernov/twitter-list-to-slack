@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    highline (1.7.8)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     json (2.0.3)
@@ -19,6 +20,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  highline
   httparty
   json
   redis (~> 3.2)
