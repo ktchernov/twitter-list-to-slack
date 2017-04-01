@@ -3,7 +3,7 @@ GEM
   specs:
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
-    json (1.8.3)
+    json (2.0.3)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
@@ -20,9 +20,12 @@ PLATFORMS
 
 DEPENDENCIES
   httparty
-  json (= 1.8.3)
+  json
   redis (~> 3.2)
   twitter_oauth
+
+RUBY VERSION
+   ruby 2.4.1p111
 
 BUNDLED WITH
    1.14.6

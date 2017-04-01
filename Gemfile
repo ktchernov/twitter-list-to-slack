@@ -1,6 +1,7 @@
 source 'https://rubygems.org/'
+ruby '2.4.1'
 
 gem 'twitter_oauth'
-gem 'json', '1.8.3'
+gem 'json'
 gem 'httparty'
 gem 'redis', '~>3.2'
