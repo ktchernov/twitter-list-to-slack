@@ -75,6 +75,9 @@ tweets.sort! { |tweetA, tweetB|
 	tweetB['retweet_count'] + tweetB['favorite_count'] <=> tweetA['retweet_count'] + tweetA['favorite_count']
 }
 
+# Drop responses an sensitive (NSFW) tweets
+tweets.reject! { |tweet| tweet['in_reply_to_user_id_str'] || tweet['possibly_sensitive'] }
+
 # Same account can only be emitted emit_max_tweets_per_user times per session
 if config.key? 'emit_max_tweets_per_user'
 	seen_users = {}

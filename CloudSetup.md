@@ -1,6 +1,6 @@
 # Cloud Setup
 
-If hosting the script with a cloud provider (such as Heroku), credentials and other parameters could be configured through environment variables instead of a credentials file. Instead of using local storage for hsitory, Redis should be configured (local storage typically will not work on Cloud providers).
+If hosting the script with a cloud provider (such as Heroku), credentials and other parameters could be configured through environment variables instead of a credentials file. Instead of using local storage for history, Redis should be configured (local storage typically will not work on Cloud providers).
 
 ### Crediential Environment Variables
 
@@ -22,5 +22,5 @@ The optional helper `time_guarded_run.rb` can be used to schedule jobs. For exam
 | Variable | Value |
 | ------------- | ------------- |
 | KB_WEEKDAY_ONLY | If true the bot will only emit Tweets on Weekdays (default is true) |
-| KB_START_HOUR, KB_END_HOUR | Tweets will only be emitted when the script is called between these hours | 
+| KB_START_HOUR, KB_END_HOUR | Tweets will only be emitted when the script is called between these hours |
 | KB_MAX_TWEETS | Maximum tweets to emit |
