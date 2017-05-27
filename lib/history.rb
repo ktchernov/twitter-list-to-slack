@@ -28,6 +28,19 @@ class History
     end
   end
 
+  def clear_history
+    if @redis.nil?
+      begin
+        File.delete HISTORY_FILE
+      rescue Exception => e
+        puts "History file could not be deleted: " + e.to_s
+      end
+
+    else
+      delete_from_redis
+    end
+  end
+
 private
 
   def load_from_local
@@ -37,6 +50,10 @@ private
     rescue
       nil
     end
+  end
+
+  def delete_from_redis
+    @redis.del redis_key
   end
 
   def load_from_redis
