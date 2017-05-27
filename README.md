@@ -11,7 +11,7 @@ remote service (such as Heroku).
 
 Example `config.xml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
 
-<img src="Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
+<img src="docs/Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
 
 ### Basic Script Usage
 
@@ -86,7 +86,7 @@ For example on Mac OS X, you can set a cron job using `crontab -e`:
 [See Apple's Documentation](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) for more details on this example.
 
 ### 5b Heroku timed job
-See [Cloud Setup instructions](CloudSetup.md) for more info.
+See [Cloud Setup instructions](docs/CloudSetup.md) for more info.
 
 # LICENSE
 
