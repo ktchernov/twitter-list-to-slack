@@ -1,11 +1,11 @@
-require 'oauth'
 require 'json'
 require 'httparty'
 require 'optparse'
 require 'yaml'
-require 'set'
 require_relative 'lib/credentials'
 require_relative 'lib/history'
+require_relative 'lib/twitter_list_reader'
+require_relative 'lib/tweet_filter'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -39,64 +39,24 @@ end
 
 credentials = load_credentials
 
-api_version = '1.1'
-api_host = 'api.twitter.com'
-
 config = YAML.load_file('config.yml')
-
-consumer = OAuth::Consumer.new(
-		credentials['consumer_key'],
-		credentials['consumer_secret'],
-		{:site => "https://#{api_host}"}
-)
-
-access_token = OAuth::AccessToken.new(consumer, credentials['token'], credentials['secret'])
 
 history = History.new(url: ENV['KB_REDIS_URL'])
 latest_emitted_id = history.load_latest_emitted_id unless options[:no_history]
 
-path_to_query="/#{api_version}/lists/statuses.json?owner_screen_name=#{config['twitter_user']}&slug=#{config['twitter_list']}"
-path_to_query+="&since_id=#{latest_emitted_id}" unless latest_emitted_id.nil?
-path_to_query+="&include_rts=0&count=#{config['num_tweets_to_fetch']}&include_entities=false"
-response=access_token.get(path_to_query)
+list_reader = TwitterListReader.new credentials
+tweets = list_reader.read_list(
+	user: config['twitter_user'],
+	list: config['twitter_list'],
+	latest_emitted_id: latest_emitted_id,
+	num_tweets: config['num_tweets_to_fetch']
+)
 
-raise "Failed to get twitter feed: #{response.to_s} for #{path_to_query}" unless response.class == Net::HTTPOK
-
-tweets=JSON.parse(response.body)
-
-tweets.select! { |tweet|
-	tweet['retweet_count'] >= config['retweet_min_count'] || tweet['favorite_count'] >= config['likes_min_count'] }
-
-# Split out words, compare them to blacklist.
-blacklist_set = config['blacklisted_words'].map { |word| word.downcase }
-tweets.reject! { |tweet| tweet['text'].split(/[^\w]+/).any? { |word| blacklist_set.member?(word.downcase) } }
-
-tweets.sort! { |tweetA, tweetB|
-	tweetB['retweet_count'] + tweetB['favorite_count'] <=> tweetA['retweet_count'] + tweetA['favorite_count']
-}
-
-# Drop responses an sensitive (NSFW) tweets
-tweets.reject! { |tweet| tweet['in_reply_to_user_id_str'] || tweet['possibly_sensitive'] }
-
-# Same account can only be emitted emit_max_tweets_per_user times per session
-if config.key? 'emit_max_tweets_per_user'
-	seen_users = {}
-	tweets_to_emit = []
-	tweets.each { |tweet|
-		screen_name = tweet['user']['screen_name']
-
-		seen_users[screen_name] = 0 unless seen_users.key? screen_name
-		next if seen_users[screen_name] >= config['emit_max_tweets_per_user']
-
-		seen_users[screen_name]=seen_users[screen_name]+1
-
-		tweets_to_emit << tweet
-
-		break if tweets_to_emit.length == options[:number_of_tweets]
-	}
-else
-	tweets_to_emit = tweets.take options[:number_of_tweets]
-end
+tweets_to_emit = filter(
+	tweets: tweets,
+	config: config,
+	max_tweets: options[:number_of_tweets]
+)
 
 latest_emitted_id=0
 

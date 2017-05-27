@@ -14,6 +14,7 @@ exit unless confirm.downcase == 'y'
 
 HTTParty.post credentials['slack_webhooks_uri'], {
     :body => {
+        :username => 'Konstabot',
         :text => thing_to_say
     }.to_json,
     :headers => {'Content-Type' => 'application/json'}
