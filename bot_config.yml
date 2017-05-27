@@ -1,4 +1,4 @@
 blacklisted_words: ['Trump', 'Hillary', 'debatenight', 'racist', 'ISIS', 'Donald', 'Clinton', 'election', 'debate', 'Pence', 'immigration', 'Subcommittee', 'president' ]
 emit_max_tweets_per_user: 1 # maximum number of tweets to emit for each twitter account
 num_tweets_to_fetch: 1000 # maximum number of tweets that will be downloaded from Twitter
-bot_name: 'Konstabot.kt'
+bot_name: 'Konstabot'
