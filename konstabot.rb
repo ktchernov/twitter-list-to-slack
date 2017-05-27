@@ -56,7 +56,7 @@ config_files.each { |config_file|
 		user: config['twitter_user'],
 		list: config['twitter_list'],
 		latest_emitted_id: latest_emitted_id,
-		num_tweets: config['num_tweets_to_fetch']
+		num_tweets: bot_config['num_tweets_to_fetch']
 	)
 
 	filtered_tweets += tweet_filter.filter(
@@ -84,7 +84,7 @@ filtered_tweets.each { |tweet|
 
 	twitter_status_uri = "https://twitter.com/#{user_name}/statuses/#{id_str}"
 	if options[:dry_run]
-		puts "<Score: #{tweet_filter.tweet_score(tweet)}> [#{twitter_status_uri}] #{user_name}: #{msg_text}"
+		puts "<Score: #{tweet_filter.tweet_score(tweet)}, r: #{tweet['retweet_count']}, fv:#{tweet['favorite_count']}}> [#{twitter_status_uri}] #{user_name}: #{msg_text}"
 	else
 		HTTParty.post credentials['slack_webhooks_uri'], {
 				:body => {

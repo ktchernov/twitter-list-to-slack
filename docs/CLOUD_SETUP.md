@@ -12,6 +12,7 @@ If hosting the script with a cloud provider (such as Heroku), credentials and ot
 | KB_SECRET | Twitter Access Token Secret|
 | KB_SLACK_WEBHOOKS_URI | Slack WebHooks API |
 | KB_REDIS_URL | URL for a Redis service provider* |
+| KB_REDIS_PREFIX | (Optional) prefix for Redis keys if using the same Redis instance across several bot instances |
 
 *=Redis is used to store the history of the last emitted tweet. Free providers such as Redis To Go are available with Heroku.
 
