@@ -83,9 +83,10 @@ filtered_tweets.each { |tweet|
 	latest_emitted_id=id if id > latest_emitted_id
 
 	twitter_status_uri = "https://twitter.com/#{user_name}/statuses/#{id_str}"
-	if options[:dry_run]
-		puts "<Score: #{tweet_filter.tweet_score(tweet)}, r: #{tweet['retweet_count']}, fv:#{tweet['favorite_count']}}> [#{twitter_status_uri}] #{user_name}: #{msg_text}"
-	else
+
+	puts "<Score: #{tweet_filter.tweet_score(tweet)}, r: #{tweet['retweet_count']}, fv:#{tweet['favorite_count']}> [#{twitter_status_uri}] #{user_name}: #{msg_text}"
+
+	unless options[:dry_run]
 		HTTParty.post credentials['slack_webhooks_uri'], {
 				:body => {
 						:text => twitter_status_uri,
