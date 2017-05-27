@@ -2,7 +2,7 @@ require 'oauth'
 require 'json'
 require 'httparty'
 require 'highline/import'
-require_relative 'lib/credentials'
+require_relative '../lib/credentials'
 
 credentials = load_credentials
 thing_to_say = ARGV[0]

@@ -49,7 +49,7 @@ See [Cloud Setup instructions](CloudSetup.md)
 ## 2. Configure Twitter List
 Pick the list that you want to follow. If the list is private, then the setup steps for Twitter API above need to link to the same account to which the private list belongs to. While public lists can be read from any Twitter account.
 
-Edit `config.yml` to set `twitter_user` to the Twitter handle of the user that owns the list, and set `twitter_list` to the list slug from the list's URL.
+Edit `.yml` files under `sources` to set `twitter_user` to the Twitter handle of the user that owns the list, and set `twitter_list` to the list slug from the list's URL.
 
 e.g. For https://twitter.com/k_tcher/lists/android:
 
@@ -86,7 +86,7 @@ For example on Mac OS X, you can set a cron job using `crontab -e`:
 [See Apple's Documentation](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) for more details on this example.
 
 ### 5b Heroku timed job
-See [Cloud Setup instructions](docs/CloudSetup.md) for more info.
+  See [Cloud Setup instructions](docs/CLOUD_SETUP.md) for more info.
 
 # LICENSE
 

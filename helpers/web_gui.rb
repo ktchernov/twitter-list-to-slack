@@ -1,7 +1,7 @@
 # This file provides a web front end for the bot (e.g. can be used with Heroku)
 
 require 'sinatra.rb'
-require_relative 'lib/history'
+require_relative '../lib/history'
 
 history = History.new(url: ENV['KB_REDIS_URL'])
 

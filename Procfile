@@ -1,2 +1,1 @@
-web: bundle exec rackup config.ru -p $PORT
-
+web: bundle exec rackup helpers/config.ru -p $PORT
