@@ -37,31 +37,43 @@ rescue OptionParser::ParseError
 	exit 1
 end
 
-credentials = load_credentials
-
-config = YAML.load_file('config.yml')
-
 history = History.new(url: ENV['KB_REDIS_URL'])
 latest_emitted_id = history.load_latest_emitted_id unless options[:no_history]
 
-list_reader = TwitterListReader.new credentials
-tweets = list_reader.read_list(
-	user: config['twitter_user'],
-	list: config['twitter_list'],
-	latest_emitted_id: latest_emitted_id,
-	num_tweets: config['num_tweets_to_fetch']
-)
+bot_config = YAML.load_file 'bot_config.yml'
 
-tweets_to_emit = filter(
-	tweets: tweets,
-	config: config,
+credentials = load_credentials
+list_reader = TwitterListReader.new credentials
+
+tweet_filter = TweetFilter.new bot_config
+filtered_tweets = []
+
+config_files = Dir.glob("configs/*.yml")
+config_files.each { |config_file|
+	config = YAML.load_file config_file
+
+	tweets = list_reader.read_list(
+		user: config['twitter_user'],
+		list: config['twitter_list'],
+		latest_emitted_id: latest_emitted_id,
+		num_tweets: config['num_tweets_to_fetch']
+	)
+
+	filtered_tweets += tweet_filter.filter(
+		tweets: tweets,
+		config: config
+	)
+}
+
+filtered_tweets = tweet_filter.pick_best_tweets(
+	tweets: filtered_tweets,
 	max_tweets: options[:number_of_tweets]
 )
 
-latest_emitted_id=0
+latest_emitted_id = 0
 
 # Send the Tweets to Slack
-tweets_to_emit.each { |tweet|
+filtered_tweets.each { |tweet|
 	msg_text = tweet['text']
 	user_name = tweet['user']['screen_name']
 	id=tweet['id']
@@ -72,12 +84,12 @@ tweets_to_emit.each { |tweet|
 
 	twitter_status_uri = "https://twitter.com/#{user_name}/statuses/#{id_str}"
 	if options[:dry_run]
-		puts "[#{twitter_status_uri}] #{user_name}: #{msg_text}"
+		puts "<Score: #{tweet_filter.tweet_score(tweet)}> [#{twitter_status_uri}] #{user_name}: #{msg_text}"
 	else
 		HTTParty.post credentials['slack_webhooks_uri'], {
 				:body => {
 						:text => twitter_status_uri,
-						:username => "#{user_name} (#{config['bot_name']})",
+						:username => "#{user_name} (#{bot_config['bot_name']})",
 						:icon_url => icon_url
 				}.to_json,
 				:headers => {'Content-Type' => 'application/json'}
@@ -85,7 +97,7 @@ tweets_to_emit.each { |tweet|
 	end
 }
 
-puts "Printed #{tweets_to_emit.length} tweets"
+puts "Printed #{filtered_tweets.length} tweets"
 
 unless options[:dry_run] || options[:no_history] || latest_emitted_id == 0
 	history.save_latest_emitted_id latest_emitted_id

@@ -1,0 +1,5 @@
+twitter_user: 'k_tcher'
+twitter_list: 'android'
+required_word: 'Kotlin'
+retweet_min_count: 2
+likes_min_count: 2
