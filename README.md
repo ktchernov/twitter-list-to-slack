@@ -9,7 +9,7 @@ remote service (such as Heroku).
 
 ### Example
 
-Example `config.xml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
+Example `configs/android.yml` will point to my Twitter account for a list of Android-related Twitter users. This is what the output will look like in Slack:
 
 <img src="docs/Konstabot_example.png" alt="Screenshot of an example of Slack integration" width="600px"/>
 
@@ -46,15 +46,17 @@ This file is not part of the git repository and should not be shared.
 ### 1.2b Environment variables (for a cloud setup)
 See [Cloud Setup instructions](CloudSetup.md)
 
-## 2. Configure Twitter List
+## 2. Configure Twitter List(s)
 Pick the list that you want to follow. If the list is private, then the setup steps for Twitter API above need to link to the same account to which the private list belongs to. While public lists can be read from any Twitter account.
 
-Edit `.yml` files under `sources` to set `twitter_user` to the Twitter handle of the user that owns the list, and set `twitter_list` to the list slug from the list's URL.
+Edit `.yml` files under `configs` to set `twitter_user` to the Twitter handle of the user that owns the list, and set `twitter_list` to the list slug from the list's URL.
 
 e.g. For https://twitter.com/k_tcher/lists/android:
 
     twitter_user: 'k_tcher'
     twitter_list: 'android'
+
+The script will merge multiple lists defined as separate `configs/*.yml` files into one feed.
 
 ## 3. Other settings and Dry Run
 Try out your set up with a dry run:

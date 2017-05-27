@@ -12,9 +12,11 @@ confirm = ask("Send \"#{thing_to_say}\" to the configured Slack channel? [y/n] "
 }
 exit unless confirm.downcase == 'y'
 
+bot_config = YAML.load_file '../bot_config.yml'
+
 HTTParty.post credentials['slack_webhooks_uri'], {
     :body => {
-        :username => 'Konstabot',
+        :username => bot_config['bot_name'],
         :text => thing_to_say
     }.to_json,
     :headers => {'Content-Type' => 'application/json'}

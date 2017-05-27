@@ -37,7 +37,7 @@ rescue OptionParser::ParseError
 	exit 1
 end
 
-history = History.new(url: ENV['KB_REDIS_URL'])
+history = History.new(url: ENV['KB_REDIS_URL'], prefix: ENV['KB_REDIS_PREFIX'])
 latest_emitted_id = history.load_latest_emitted_id unless options[:no_history]
 
 bot_config = YAML.load_file 'bot_config.yml'

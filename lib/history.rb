@@ -3,11 +3,12 @@ require 'redis'
 
 class History
   KEY_LATEST_EMITTED_ID = 'latest_emitted_id'
-  HISTORY_FILE = 'history.yml'
+  HISTORY_FILE = '../history.yml'
 
-  def initialize(url:)
+  def initialize(url:, prefix:)
     unless url.nil?
       @redis = Redis.new(:url => url)
+      @prefix = prefix
     end
   end
 
@@ -39,7 +40,7 @@ private
   end
 
   def load_from_redis
-    @redis.get KEY_LATEST_EMITTED_ID
+    @redis.get redis_key
   end
 
   def save_to_local(latest_emitted_id)
@@ -49,6 +50,12 @@ private
   end
 
   def save_to_redis(id)
-    @redis.set KEY_LATEST_EMITTED_ID, id
+    @redis.set redis_key, id
+  end
+
+  def redis_key
+    return KEY_LATEST_EMITTED_ID if @prefix.nil?
+
+    "#{@prefix}-#{KEY_LATEST_EMITTED_ID}"
   end
 end
