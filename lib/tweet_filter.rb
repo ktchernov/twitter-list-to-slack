@@ -5,6 +5,7 @@ class TweetFilter
   def initialize(bot_config)
     @bot_config = bot_config
     @blacklist_set = bot_config['blacklisted_words'].map { |word| word.downcase }
+    @retweet_weight = @bot_config['retweet_weight'] || 1
   end
 
   def filter(tweets:, config:)
@@ -49,7 +50,7 @@ class TweetFilter
   end
 
   def tweet_score(tweet)
-      tweet['retweet_count'] + tweet['favorite_count']
+      tweet['retweet_count'] * @retweet_weight + tweet['favorite_count']
   end
 
 private
